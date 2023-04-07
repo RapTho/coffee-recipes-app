@@ -9,11 +9,38 @@ export default function CoffeeAdd() {
           type="text"
           placeholder="Coffee name"
         />
-        <label for="input">Input:</label>
-        <input type="text" id="input" name="input" value="John" />
-        <label for="output">Output:</label>
-        <input type="text" id="output" name="output" value="Doe" />
-        <input type="submit" value="Add recipe" />
+        <div className={styles.row}>
+          <div>
+            <label for="input">Input:</label>
+            <input type="number" id="input" name="input" placeholder="12" />
+            <span>[g]</span>
+          </div>
+          <div>
+            <label for="output">Output:</label>
+            <input type="text" id="output" name="output" placeholder="36" />
+            <span>[g]</span>
+          </div>
+        </div>
+        <div className={styles.row}>
+          <div>
+            <label for="time">Time:</label>
+            <input type="number" id="time" name="time" placeholder="25" />
+            <span>[s]</span>
+          </div>
+          <div>
+            <label for="temp">Temp:</label>
+            <input type="text" id="temp" name="temp" placeholder="88" />
+            <span>[°C]</span>
+          </div>
+        </div>
+        <div className={styles.row}>
+          <div>
+            <label for="time">Mill:</label>
+            <input type="number" id="time" name="time" placeholder="3.4" />
+            <span>[s]</span>
+          </div>
+        </div>
+        <input className={styles.save} type="submit" value="Add recipe" />
       </form>
     </div>
   );
