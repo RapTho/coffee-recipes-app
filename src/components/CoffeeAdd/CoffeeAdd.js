@@ -1,45 +1,55 @@
 import styles from "./CoffeeAdd.module.css";
+import Input from "../Input/Input";
 
 export default function CoffeeAdd() {
   return (
     <div className={styles.container}>
-      <form action="/api/coffee-add" method="post">
+      <form className={styles.form} action="/api/coffee-add" method="post">
         <input
           className={styles.coffeeName}
           type="text"
           placeholder="Coffee name"
         />
-        <div className={styles.row}>
-          <div>
-            <label for="input">Input:</label>
-            <input type="number" id="input" name="input" placeholder="12" />
-            <span>[g]</span>
-          </div>
-          <div>
-            <label for="output">Output:</label>
-            <input type="text" id="output" name="output" placeholder="36" />
-            <span>[g]</span>
-          </div>
-        </div>
-        <div className={styles.row}>
-          <div>
-            <label for="time">Time:</label>
-            <input type="number" id="time" name="time" placeholder="25" />
-            <span>[s]</span>
-          </div>
-          <div>
-            <label for="temp">Temp:</label>
-            <input type="text" id="temp" name="temp" placeholder="88" />
-            <span>[°C]</span>
-          </div>
-        </div>
-        <div className={styles.row}>
-          <div>
-            <label for="time">Mill:</label>
-            <input type="number" id="time" name="time" placeholder="3.4" />
-            <span>[s]</span>
-          </div>
-        </div>
+        <Input
+          className={styles.input}
+          label="Input:"
+          type="text"
+          name="input"
+          placeholder="12"
+          unit="g"
+        />
+        <Input
+          className={styles.output}
+          label="Output:"
+          type="text"
+          name="output"
+          placeholder="36"
+          unit="g"
+        />
+        <Input
+          className={styles.time}
+          label="Time:"
+          type="text"
+          name="time"
+          placeholder="25"
+          unit="s"
+        />
+        <Input
+          className={styles.temp}
+          label="Temp:"
+          type="text"
+          name="temp"
+          placeholder="88"
+          unit="°C"
+        />
+        <Input
+          className={styles.coffeeName}
+          label="Mill:"
+          type="text"
+          name="mill"
+          placeholder="4.6"
+          unit="."
+        />
         <input className={styles.save} type="submit" value="Add recipe" />
       </form>
     </div>

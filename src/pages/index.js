@@ -11,12 +11,14 @@ export default function Home() {
         <title>Recipes treasury</title>
       </Head>
       <Layout>
-        <Link href="/coffee" className={styles.link}>
-          Coffee
-        </Link>
-        <Link href="/kitchen" className={styles.link}>
-          Kitchen
-        </Link>
+        <div className={styles.container}>
+          <Link href="/coffee" className={styles.link}>
+            Coffee
+          </Link>
+          <Link href="/kitchen" className={styles.link}>
+            Kitchen
+          </Link>
+        </div>
       </Layout>
     </>
   );

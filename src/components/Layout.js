@@ -1,7 +1,10 @@
 import Head from "next/head";
-import styles from "./Layout.module.css";
+import Script from "next/script";
 
-import Link from "next/link";
+import styles from "./Layout.module.css";
+import Header from "./Header/Header";
+import Footer from "./Footer/Footer";
+
 import { useRouter } from "next/router";
 
 export default function Layout({ children, home }) {
@@ -19,10 +22,9 @@ export default function Layout({ children, home }) {
         <link rel="icon" href="/favicon.ico" />
         <meta name="og:title" content={defaultTitle} />
       </Head>
-      <header className={styles.header}>
-        {!(router.pathname === "/") && <Link href="/">← Back to home</Link>}
-      </header>
+      <Header className={styles.header} />
       <main className={styles.center}>{children}</main>
+      <Footer className={styles.footer} />
     </div>
   );
 }

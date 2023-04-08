@@ -1,4 +1,4 @@
-import styles from "./index.module.css";
+import styles from "../index.module.css";
 import Layout from "../../components/Layout";
 
 import Head from "next/head";
@@ -11,12 +11,14 @@ export default function Coffee() {
         <Head>
           <title>Coffee</title>
         </Head>
-        <Link href="/coffee/add" className={styles.link}>
-          Add
-        </Link>
-        <Link href="/coffee/list" className={styles.link}>
-          List
-        </Link>
+        <div className={styles.container}>
+          <Link href="/coffee/add" className={styles.link}>
+            Add
+          </Link>
+          <Link href="/coffee/list" className={styles.link}>
+            List
+          </Link>
+        </div>
       </Layout>
     </>
   );
