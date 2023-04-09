@@ -1,10 +1,40 @@
 import styles from "./CoffeeAdd.module.css";
 import Input from "../Input/Input";
 
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  const data = {
+    name: event.target[0].value,
+    input: event.target[1].value,
+    output: event.target[2].value,
+    time: event.target[3].value,
+    temp: event.target[4].value,
+    mill: event.target[5].value,
+  };
+
+  const JSONdata = JSON.stringify(data);
+
+  const endpoint = "/api/v1/coffee/add";
+
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSONdata,
+  };
+
+  const response = await fetch(endpoint, options);
+
+  const result = await response.json();
+  console.log(result);
+};
+
 export default function CoffeeAdd() {
   return (
     <div className={styles.container}>
-      <form className={styles.form} action="/api/coffee-add" method="post">
+      <form className={styles.form} onSubmit={handleSubmit}>
         <input
           className={styles.coffeeName}
           type="text"
