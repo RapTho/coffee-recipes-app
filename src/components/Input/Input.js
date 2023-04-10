@@ -3,7 +3,7 @@ import styles from "./Input.module.css";
 export default function Input({ label, type, id, name, placeholder, unit }) {
   return (
     <div className={styles.container}>
-      <label className={styles.label} for="input">
+      <label className={styles.label} htmlFor={id}>
         {label}
       </label>
       <input

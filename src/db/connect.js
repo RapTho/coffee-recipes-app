@@ -1,41 +1,31 @@
 import { MongoClient } from "mongodb";
 
-const { MONGODB_URI, MONGODB_DB } = process.env;
-
-if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable");
+if (!process.env.MONGODB_URI) {
+  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
 
-if (!MONGODB_DB) {
-  throw new Error("Please define the MONGODB_DB environment variable");
-}
+const uri = process.env.MONGODB_URI;
+const options = {};
 
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections growing exponentiatlly
- * during API Route usage.
- */
-let cached = global.mongo;
-if (!cached) cached = global.mongo = {};
+let client;
+let clientPromise;
 
-export async function connectToDatabase() {
-  if (cached.conn) return cached.conn;
-  if (!cached.promise) {
-    const conn = {};
-    const opts = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    };
-    cached.promise = MongoClient.connect(MONGODB_URI, opts)
-      .then((client) => {
-        conn.client = client;
-        return client.db(MONGODB_DB);
-      })
-      .then((db) => {
-        conn.db = db;
-        cached.conn = conn;
-      });
+if (process.env.NODE_ENV === "dev") {
+  // In development mode, use a global variable so that the value
+  // is preserved across module reloads caused by HMR (Hot Module Replacement).
+  let globalWithMongo = global;
+
+  if (!globalWithMongo._mongoClientPromise) {
+    client = new MongoClient(uri, options);
+    globalWithMongo._mongoClientPromise = client.connect();
   }
-  await cached.promise;
-  return cached.conn;
+  clientPromise = globalWithMongo._mongoClientPromise;
+} else {
+  // In production mode, it's best to not use a global variable.
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
 }
+
+// Export a module-scoped MongoClient promise. By doing this in a
+// separate module, the client can be shared across functions.
+export default clientPromise;
