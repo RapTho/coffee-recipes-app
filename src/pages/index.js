@@ -1,10 +1,11 @@
 import styles from "./index.module.css";
 import Layout from "../components/Layout";
+import CoffeeList from "../components/CoffeeList/CoffeeList";
 
 import Head from "next/head";
 import Link from "next/link";
 
-export default function Home() {
+export default function Home({ data }) {
   return (
     <>
       <Head>
@@ -12,14 +13,24 @@ export default function Home() {
       </Head>
       <Layout>
         <div className={styles.container}>
-          <Link href="/coffee" className={styles.link}>
-            Coffee
-          </Link>
-          <Link href="/kitchen" className={styles.link}>
-            Kitchen
-          </Link>
+          <CoffeeList data={data} />
         </div>
       </Layout>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const res = await fetch(`${process.env.BASE_URL}/api/v1/getData`);
+  const data = await res.json();
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: { data },
+  };
 }

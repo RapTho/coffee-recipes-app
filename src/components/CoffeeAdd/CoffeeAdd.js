@@ -15,7 +15,7 @@ const handleSubmit = async (event) => {
 
   const JSONdata = JSON.stringify(data);
 
-  const endpoint = "/api/v1/coffee/add";
+  const endpoint = "/api/v1/add";
 
   const options = {
     method: "POST",

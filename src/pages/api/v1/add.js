@@ -1,4 +1,4 @@
-import clientPromise from "../../../../db/connect";
+import clientPromise from "../../../db/connect";
 
 export default async function handler(req, res) {
   const client = await clientPromise;
