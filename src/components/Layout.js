@@ -1,18 +1,15 @@
 import Head from "next/head";
-import Script from "next/script";
 
-import styles from "./Layout.module.css";
+import { Content, Theme } from "@carbon/react";
+// import styles from "./Layout.module.css";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 
-import { useRouter } from "next/router";
-
 export default function Layout({ children, home }) {
   const defaultTitle = "Recipes treasury";
-  const router = useRouter();
 
   return (
-    <div className={styles.main}>
+    <div>
       <Head>
         <meta
           name="description"
@@ -22,9 +19,11 @@ export default function Layout({ children, home }) {
         <link rel="icon" href="/favicon.ico" />
         <meta name="og:title" content={defaultTitle} />
       </Head>
-      <Header className={styles.header} />
-      <main className={styles.center}>{children}</main>
-      <Footer className={styles.footer} />
+      <Theme theme="white">
+        <Header />
+      </Theme>
+      <Content>{children}</Content>
+      <Footer />
     </div>
   );
 }
