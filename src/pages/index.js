@@ -1,4 +1,3 @@
-import styles from "./index.module.css";
 import Layout from "../components/Layout";
 import CoffeeList from "../components/CoffeeList/CoffeeList";
 
@@ -12,25 +11,26 @@ export default function Home({ data }) {
         <title>Recipes treasury</title>
       </Head>
       <Layout>
-        <div className={styles.container}>
+        <CoffeeList data="asdf" />
+        {/* <div className={styles.container}>
           <CoffeeList data={data} />
-        </div>
+        </div> */}
       </Layout>
     </>
   );
 }
 
-export async function getServerSideProps(context) {
-  const res = await fetch(`${process.env.BASE_URL}/api/v1/getData`);
-  const data = await res.json();
+// export async function getServerSideProps(context) {
+//   const res = await fetch(`${process.env.BASE_URL}/api/v1/getData`);
+//   const data = await res.json();
 
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
+//   if (!data) {
+//     return {
+//       notFound: true,
+//     };
+//   }
 
-  return {
-    props: { data },
-  };
-}
+//   return {
+//     props: { data },
+//   };
+// }
