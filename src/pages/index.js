@@ -2,7 +2,6 @@ import Layout from "../components/Layout";
 import CoffeeList from "../components/CoffeeList/CoffeeList";
 
 import Head from "next/head";
-import Link from "next/link";
 
 export default function Home({ data }) {
   return (
@@ -12,9 +11,6 @@ export default function Home({ data }) {
       </Head>
       <Layout>
         <CoffeeList data="asdf" />
-        {/* <div className={styles.container}>
-          <CoffeeList data={data} />
-        </div> */}
       </Layout>
     </>
   );

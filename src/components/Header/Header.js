@@ -11,7 +11,7 @@ import {
   SideNavItems,
   HeaderSideNavItems,
 } from "@carbon/react";
-import { Link } from "next";
+import Link from "next/link";
 
 const TutorialHeader = () => (
   <HeaderContainer
@@ -23,11 +23,11 @@ const TutorialHeader = () => (
           onClick={onClickSideNavExpand}
           isActive={isSideNavExpanded}
         />
-        <HeaderName as={Link} to="/" prefix={null}>
+        <HeaderName as={Link} href="/" prefix={null}>
           Coffee recipes
         </HeaderName>
         <HeaderNavigation aria-label="Coffee recipes">
-          <HeaderMenuItem as={Link} to="/add">
+          <HeaderMenuItem as={Link} href="/add">
             Add recipe
           </HeaderMenuItem>
         </HeaderNavigation>
@@ -38,7 +38,7 @@ const TutorialHeader = () => (
         >
           <SideNavItems>
             <HeaderSideNavItems>
-              <HeaderMenuItem as={Link} to="/add">
+              <HeaderMenuItem as={Link} href="/add">
                 Add recipe
               </HeaderMenuItem>
             </HeaderSideNavItems>

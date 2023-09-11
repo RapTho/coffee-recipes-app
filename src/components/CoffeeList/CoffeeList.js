@@ -42,6 +42,7 @@ export default function CoffeeList({ data }) {
         onChange={handleChange}
         closeButtonLabelText="Clear search input"
         size="lg"
+        labelText="search"
       />
       {searchResults.map((listItem, key) => (
         <ContainedListItem key={key} action={itemAction} onClick={handleClick}>
