@@ -144,7 +144,7 @@ export default function CoffeeAdd() {
                         <RadioButtonGroup
                           legendText="Strainer size"
                           name="strainer"
-                          defaultSelected="18g"
+                          defaultSelected="radio-18g"
                         >
                           <RadioButton
                             labelText="18g"
