@@ -12,12 +12,10 @@ export default function CoffeeList({ data }) {
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    const listItems = [
-      "List item 1",
-      "List item 2",
-      "List item 3",
-      "List item 4",
-    ];
+    const listItems = data.map(
+      (item) =>
+        `${item.roaster} - ${item.bean}:   mill: ${item.mill}  |  input: ${item.input}  |  output: ${item.output}`
+    );
     const results = listItems.filter((listItem) =>
       listItem.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -45,7 +43,12 @@ export default function CoffeeList({ data }) {
         labelText="search"
       />
       {searchResults.map((listItem, key) => (
-        <ContainedListItem key={key} action={itemAction} onClick={handleClick}>
+        <ContainedListItem
+          key={key}
+          action={itemAction}
+          onClick={handleClick}
+          className="coffee-list-list-item"
+        >
           {listItem}
         </ContainedListItem>
       ))}

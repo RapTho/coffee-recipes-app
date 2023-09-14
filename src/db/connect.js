@@ -23,6 +23,7 @@ if (process.env.NODE_ENV === "dev") {
 } else {
   // In production mode, it's best to not use a global variable.
   client = new MongoClient(uri, options);
+  client.db(process.env.MONGODB_DB);
   clientPromise = client.connect();
 }
 

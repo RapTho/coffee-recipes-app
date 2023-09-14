@@ -5,7 +5,6 @@ import {
   FormGroup,
   Stack,
   TextInput,
-  FluidForm,
   NumberInput,
   RadioButtonGroup,
   RadioButton,
@@ -17,32 +16,34 @@ const handleSubmit = async (event) => {
   event.preventDefault();
 
   console.log(event);
+  const data = {
+    roaster: event.target[1].value,
+    bean: event.target[2].value,
+    input: event.target[3].value,
+    output: event.target[6].value,
+    mill: event.target[9].value,
+    time: event.target[12].value,
+    temperature: event.target[15].value,
+    "18g": event.target[19].checked,
+    "12g": event.target[20].checked,
+  };
 
-  // const data = {
-  //   name: event.target[0].value,
-  //   input: event.target[1].value,
-  //   output: event.target[2].value,
-  //   time: event.target[3].value,
-  //   temp: event.target[4].value,
-  //   mill: event.target[5].value,
-  // };
+  const JSONdata = JSON.stringify(data);
 
-  // const JSONdata = JSON.stringify(data);
+  const endpoint = "/api/v1/add";
 
-  // const endpoint = "/api/v1/add";
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSONdata,
+  };
 
-  // const options = {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSONdata,
-  // };
+  const response = await fetch(endpoint, options);
 
-  // const response = await fetch(endpoint, options);
-
-  // const result = await response.json();
-  // console.log(result);
+  const result = await response.json();
+  console.log(result);
 };
 
 export default function CoffeeAdd() {
@@ -50,7 +51,7 @@ export default function CoffeeAdd() {
     <Grid>
       <Column lg={16} md={8} sm={4}>
         <Form onSubmit={handleSubmit}>
-          <FormGroup>
+          <FormGroup legendText="">
             <Stack gap={7}>
               <Heading>Coffee parameters</Heading>
               <Grid>
@@ -58,37 +59,49 @@ export default function CoffeeAdd() {
                   <Stack gap={7}>
                     <Grid>
                       <Column lg={8} md={4} sm={4}>
-                        <FluidForm>
-                          <TextInput
-                            type="roaster"
-                            labelText="Roaster"
-                            id="text-roaster"
-                          />
-                        </FluidForm>
+                        <TextInput
+                          size="lg"
+                          type="roaster"
+                          labelText="Roaster"
+                          id="text-roaster"
+                        />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
-                        <FluidForm>
-                          <TextInput
-                            type="bean"
-                            labelText="Bean"
-                            id="text-bean"
-                          />
-                        </FluidForm>
+                        <TextInput
+                          size="lg"
+                          type="bean"
+                          labelText="Bean"
+                          id="text-bean"
+                        />
                       </Column>
                     </Grid>
                     <Grid>
                       <Column lg={8} md={4} sm={4}>
                         <NumberInput
-                          id="time"
+                          id="input"
                           min={0}
-                          max={50}
-                          value={25}
+                          max={40}
+                          value={18}
                           step={0.1}
-                          label="Extraction time"
-                          helperText="Seconds [s]"
+                          label="Input"
+                          helperText="grams [g]"
                           invalidText="Number is not valid"
                         />
                       </Column>
+                      <Column lg={8} md={4} sm={4}>
+                        <NumberInput
+                          id="output"
+                          min={0}
+                          max={60}
+                          value={45}
+                          step={0.1}
+                          label="Output"
+                          helperText="grams [g]"
+                          invalidText="Number is not valid"
+                        />
+                      </Column>
+                    </Grid>
+                    <Grid>
                       <Column lg={8} md={4} sm={4}>
                         <NumberInput
                           id="mill"
@@ -97,6 +110,19 @@ export default function CoffeeAdd() {
                           value={7.4}
                           step={0.1}
                           label="Mill setting"
+                          helperText="steps"
+                          invalidText="Number is not valid"
+                        />
+                      </Column>
+                      <Column lg={8} md={4} sm={4}>
+                        <NumberInput
+                          id="time"
+                          min={0}
+                          max={50}
+                          value={25}
+                          step={0.1}
+                          label="Extraction time"
+                          helperText="seconds [s]"
                           invalidText="Number is not valid"
                         />
                       </Column>
@@ -104,19 +130,7 @@ export default function CoffeeAdd() {
                     <Grid>
                       <Column lg={8} md={4} sm={4}>
                         <NumberInput
-                          id="output"
-                          min={0}
-                          max={50}
-                          value={45}
-                          step={0.1}
-                          label="Output"
-                          helperText="output [g]"
-                          invalidText="Number is not valid"
-                        />
-                      </Column>
-                      <Column lg={8} md={4} sm={4}>
-                        <NumberInput
-                          id="time"
+                          id="temperature"
                           min={0}
                           max={120}
                           value={93}
@@ -126,22 +140,32 @@ export default function CoffeeAdd() {
                           invalidText="Number is not valid"
                         />
                       </Column>
+                      <Column lg={8} md={4} sm={2}>
+                        <RadioButtonGroup
+                          legendText="Strainer size"
+                          name="strainer"
+                          defaultSelected="18g"
+                        >
+                          <RadioButton
+                            labelText="18g"
+                            value="18"
+                            id="radio-18g"
+                            className="coffee-add-radio"
+                          />
+                          <RadioButton
+                            labelText="12g"
+                            value="12"
+                            id="radio-12g"
+                            className="coffee-add-radio"
+                          />
+                        </RadioButtonGroup>
+                      </Column>
                     </Grid>
                   </Stack>
                 </Column>
               </Grid>
               <Grid>
-                <Column lg={8} md={4} sm={2}>
-                  <RadioButtonGroup
-                    legendText="Strainer size"
-                    name="strainer"
-                    defaultSelected="18g"
-                  >
-                    <RadioButton labelText="18g" value="18" id="radio-18g" />
-                    <RadioButton labelText="12g" value="12" id="radio-12g" />
-                  </RadioButtonGroup>
-                </Column>
-                <Column lg={8} md={4} sm={2}>
+                <Column lg={16} md={8} sm={4}>
                   <Button type="submit" className="coffee-add-save">
                     Save
                   </Button>
