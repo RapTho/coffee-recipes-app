@@ -1,0 +1,11 @@
+@use '@carbon/react/scss/spacing' as *;
+
+.coffee-add-heading {
+    margin-top: $spacing-06;
+}
+
+.coffee-add-save {
+    height: 100%;
+    width: 100%;
+    border-radius: $spacing-03;
+}

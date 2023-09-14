@@ -1,4 +1,7 @@
 import {
+  Grid,
+  Column,
+  Form,
   FormGroup,
   Stack,
   TextInput,
@@ -7,8 +10,7 @@ import {
   RadioButtonGroup,
   RadioButton,
   Button,
-  Grid,
-  Column,
+  Heading,
 } from "@carbon/react";
 
 const handleSubmit = async (event) => {
@@ -45,77 +47,110 @@ const handleSubmit = async (event) => {
 
 export default function CoffeeAdd() {
   return (
-    <FormGroup legendText="Coffee parameters">
-      <Grid>
-        <Column lg={8} sm={16}>
-          <Stack gap={7}>
-            <FluidForm>
-              <TextInput type="roaster" labelText="Roaster" id="text-roaster" />
-            </FluidForm>
-            <NumberInput
-              id="input"
-              min={0}
-              max={30}
-              value={18}
-              label="Input"
-              helperText="input [g]"
-              invalidText="Number is not valid"
-            />
-            <NumberInput
-              id="time"
-              min={0}
-              max={50}
-              value={25}
-              label="Extraction time"
-              helperText="Seconds [s]"
-              invalidText="Number is not valid"
-            />
-            <NumberInput
-              id="mill"
-              min={0}
-              max={50}
-              value={7.4}
-              label="Mill setting"
-              invalidText="Number is not valid"
-            />
-          </Stack>
-          <Button>Save</Button>
-        </Column>
-        <Column lg={8} sm={16}>
-          <Stack gap={7}>
-            <FluidForm>
-              <TextInput type="bean" labelText="Bean" id="text-bean" />
-            </FluidForm>
-            <NumberInput
-              id="output"
-              min={0}
-              max={50}
-              value={45}
-              label="Output"
-              helperText="output [g]"
-              invalidText="Number is not valid"
-            />
-            <NumberInput
-              id="time"
-              min={0}
-              max={120}
-              value={93}
-              label="Temperature"
-              helperText="Degree [°C]"
-              invalidText="Number is not valid"
-            />
-
-            <RadioButtonGroup
-              legendText="Strainer size"
-              name="strainer"
-              defaultSelected="18g"
-            >
-              <RadioButton labelText="18g" value="18" id="radio-18g" />
-              <RadioButton labelText="12g" value="12" id="radio-12g" />
-            </RadioButtonGroup>
-          </Stack>
-        </Column>
-      </Grid>
-    </FormGroup>
+    <Grid>
+      <Column lg={16} md={8} sm={4}>
+        <Form onSubmit={handleSubmit}>
+          <FormGroup>
+            <Stack gap={7}>
+              <Heading>Coffee parameters</Heading>
+              <Grid>
+                <Column lg={16} md={8} sm={4}>
+                  <Stack gap={7}>
+                    <Grid>
+                      <Column lg={8} md={4} sm={4}>
+                        <FluidForm>
+                          <TextInput
+                            type="roaster"
+                            labelText="Roaster"
+                            id="text-roaster"
+                          />
+                        </FluidForm>
+                      </Column>
+                      <Column lg={8} md={4} sm={4}>
+                        <FluidForm>
+                          <TextInput
+                            type="bean"
+                            labelText="Bean"
+                            id="text-bean"
+                          />
+                        </FluidForm>
+                      </Column>
+                    </Grid>
+                    <Grid>
+                      <Column lg={8} md={4} sm={4}>
+                        <NumberInput
+                          id="time"
+                          min={0}
+                          max={50}
+                          value={25}
+                          step={0.1}
+                          label="Extraction time"
+                          helperText="Seconds [s]"
+                          invalidText="Number is not valid"
+                        />
+                      </Column>
+                      <Column lg={8} md={4} sm={4}>
+                        <NumberInput
+                          id="mill"
+                          min={0}
+                          max={50}
+                          value={7.4}
+                          step={0.1}
+                          label="Mill setting"
+                          invalidText="Number is not valid"
+                        />
+                      </Column>
+                    </Grid>
+                    <Grid>
+                      <Column lg={8} md={4} sm={4}>
+                        <NumberInput
+                          id="output"
+                          min={0}
+                          max={50}
+                          value={45}
+                          step={0.1}
+                          label="Output"
+                          helperText="output [g]"
+                          invalidText="Number is not valid"
+                        />
+                      </Column>
+                      <Column lg={8} md={4} sm={4}>
+                        <NumberInput
+                          id="time"
+                          min={0}
+                          max={120}
+                          value={93}
+                          step={1}
+                          label="Temperature"
+                          helperText="Degree [°C]"
+                          invalidText="Number is not valid"
+                        />
+                      </Column>
+                    </Grid>
+                  </Stack>
+                </Column>
+              </Grid>
+              <Grid>
+                <Column lg={8} md={4} sm={2}>
+                  <RadioButtonGroup
+                    legendText="Strainer size"
+                    name="strainer"
+                    defaultSelected="18g"
+                  >
+                    <RadioButton labelText="18g" value="18" id="radio-18g" />
+                    <RadioButton labelText="12g" value="12" id="radio-12g" />
+                  </RadioButtonGroup>
+                </Column>
+                <Column lg={8} md={4} sm={2}>
+                  <Button type="submit" className="coffee-add-save">
+                    Save
+                  </Button>
+                </Column>
+              </Grid>
+            </Stack>
+          </FormGroup>
+        </Form>
+      </Column>
+    </Grid>
   );
 }

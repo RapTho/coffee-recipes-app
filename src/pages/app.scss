@@ -4,6 +4,7 @@
 // Components
 @use '../components/Header/header';
 @use '../components/Footer/footer';
+@use '../components/CoffeeAdd/coffeeAdd';
 
 @media (min-width: 42rem) {
   .cds--grid--no-gutter {
