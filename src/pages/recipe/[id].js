@@ -1,15 +1,15 @@
 import Layout from "../../components/Layout";
-import CoffeeAdd from "../../components/CoffeeRecipe";
+import CoffeeRecipe from "../../components/CoffeeRecipe";
 import Head from "next/head";
 
-export default function AddRecipe() {
+export default function Recipe() {
   return (
     <>
       <Head>
-        <title>Add recipe</title>
+        <title>Recipe</title>
       </Head>
       <Layout>
-        <CoffeeAdd />
+        <CoffeeRecipe />
       </Layout>
     </>
   );

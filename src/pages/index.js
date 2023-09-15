@@ -1,5 +1,5 @@
-import Layout from "../components/Layout";
-import CoffeeList from "../components/CoffeeList/CoffeeList";
+import Layout from "@/components/Layout";
+import CoffeeList from "@/components/CoffeeList/CoffeeList";
 
 import Head from "next/head";
 

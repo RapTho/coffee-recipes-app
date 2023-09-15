@@ -1,15 +1,14 @@
 import Head from "next/head";
 
 import { Content, Theme } from "@carbon/react";
-// import styles from "./Layout.module.css";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
+import { RecipeContextProvider } from "@/contexts/recipeContext";
 
-export default function Layout({ children, home }) {
+export default function Layout({ children }) {
   const defaultTitle = "Recipes treasury";
-
   return (
-    <div>
+    <RecipeContextProvider>
       <Head>
         <meta
           name="description"
@@ -24,6 +23,6 @@ export default function Layout({ children, home }) {
       </Theme>
       <Content>{children}</Content>
       <Footer />
-    </div>
+    </RecipeContextProvider>
   );
 }

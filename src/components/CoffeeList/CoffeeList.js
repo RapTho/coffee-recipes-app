@@ -1,4 +1,6 @@
 import {
+  Grid,
+  Column,
   Button,
   ContainedList,
   ContainedListItem,
@@ -6,18 +8,25 @@ import {
 } from "@carbon/react";
 import { Edit } from "@carbon/icons-react";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
+import { useRecipeUpdate } from "@/contexts/recipeContext";
 
 export default function CoffeeList({ data }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState([[]]);
+
+  const updateRecipe = useRecipeUpdate();
+
+  const router = useRouter();
 
   useEffect(() => {
-    const listItems = data.map(
-      (item) =>
-        `${item.roaster} - ${item.bean}:   mill: ${item.mill}  |  input: ${item.input}  |  output: ${item.output}`
-    );
+    const listItems = data.map((item) => [
+      item._id,
+      `${item.roaster} - ${item.bean}`,
+    ]);
     const results = listItems.filter((listItem) =>
-      listItem.toLowerCase().includes(searchTerm.toLowerCase())
+      listItem[1].toLowerCase().includes(searchTerm.toLowerCase())
     );
     setSearchResults(results);
   }, [searchTerm]);
@@ -30,28 +39,38 @@ export default function CoffeeList({ data }) {
     <Button kind="ghost" iconDescription="Edit" hasIconOnly renderIcon={Edit} />
   );
   const handleEdit = (event) => {};
-  const handleClick = (event) => {};
+  const handleClick = (event) => {
+    event.preventDefault();
+
+    const itemId = event.target.querySelector("button > div > span").id;
+    updateRecipe(itemId, true);
+    router.push(`/recipe/${itemId}`);
+  };
 
   return (
-    <ContainedList label="Recipes" kind="on-page" action={""}>
-      <Search
-        placeholder="Filter"
-        value={searchTerm}
-        onChange={handleChange}
-        closeButtonLabelText="Clear search input"
-        size="lg"
-        labelText="search"
-      />
-      {searchResults.map((listItem, key) => (
-        <ContainedListItem
-          key={key}
-          action={itemAction}
-          onClick={handleClick}
-          className="coffee-list-list-item"
-        >
-          {listItem}
-        </ContainedListItem>
-      ))}
-    </ContainedList>
+    <Grid>
+      <Column lg={16} md={8} sm={4}>
+        <ContainedList label="Recipes" kind="on-page" action={""}>
+          <Search
+            placeholder="Filter"
+            value={searchTerm}
+            onChange={handleChange}
+            closeButtonLabelText="Clear search input"
+            size="lg"
+            labelText="search"
+          />
+          {searchResults.map((listItem, key) => (
+            <ContainedListItem
+              key={key}
+              action={itemAction}
+              onClick={handleClick}
+              className="coffee-list-list-item"
+            >
+              <span id={listItem[0]}>{listItem[1]}</span>
+            </ContainedListItem>
+          ))}
+        </ContainedList>
+      </Column>
+    </Grid>
   );
 }
