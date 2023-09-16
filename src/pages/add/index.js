@@ -9,7 +9,7 @@ export default function AddRecipe() {
         <title>Add recipe</title>
       </Head>
       <Layout>
-        <CoffeeAdd />
+        <CoffeeAdd readonly={false} />
       </Layout>
     </>
   );

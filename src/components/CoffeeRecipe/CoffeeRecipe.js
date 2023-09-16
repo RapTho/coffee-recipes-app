@@ -13,11 +13,8 @@ import {
   InlineLoading,
 } from "@carbon/react";
 import { useState } from "react";
-import { useRecipe } from "@/contexts/recipeContext";
 
-export default function CoffeeRecipe() {
-  const recipe = useRecipe();
-  console.log(recipe);
+export default function CoffeeRecipe({ readOnly, id }) {
   const [isLoading, setIsLoading] = useState(false);
   const [savingStatus, setSavingStatus] = useState("finished");
   const [savingMessage, setSavingMessage] = useState("Saving recipe...");
@@ -71,7 +68,7 @@ export default function CoffeeRecipe() {
   };
 
   let savingAction;
-  if (!isLoading && !recipe.readOnly) {
+  if (!isLoading && !readOnly) {
     savingAction = (
       <Grid>
         <Column lg={16} md={8} sm={4}>
@@ -81,7 +78,7 @@ export default function CoffeeRecipe() {
         </Column>
       </Grid>
     );
-  } else if (recipe.readOnly) {
+  } else if (readOnly) {
     savingAction = null;
   } else {
     savingAction = (
@@ -114,7 +111,7 @@ export default function CoffeeRecipe() {
                           type="roaster"
                           labelText="Roaster"
                           id="text-roaster"
-                          disabled={recipe.readOnly}
+                          disabled={readOnly}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
@@ -123,7 +120,7 @@ export default function CoffeeRecipe() {
                           type="bean"
                           labelText="Bean"
                           id="text-bean"
-                          disabled={recipe.readOnly}
+                          disabled={readOnly}
                         />
                       </Column>
                     </Grid>
@@ -138,7 +135,7 @@ export default function CoffeeRecipe() {
                           label="Input"
                           helperText="grams [g]"
                           invalidText="Number is not valid"
-                          disabled={recipe.readOnly}
+                          disabled={readOnly}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
@@ -151,7 +148,7 @@ export default function CoffeeRecipe() {
                           label="Output"
                           helperText="grams [g]"
                           invalidText="Number is not valid"
-                          disabled={recipe.readOnly}
+                          disabled={readOnly}
                         />
                       </Column>
                     </Grid>
@@ -166,7 +163,7 @@ export default function CoffeeRecipe() {
                           label="Mill setting"
                           helperText="steps"
                           invalidText="Number is not valid"
-                          disabled={recipe.readOnly}
+                          disabled={readOnly}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
@@ -179,7 +176,7 @@ export default function CoffeeRecipe() {
                           label="Extraction time"
                           helperText="seconds [s]"
                           invalidText="Number is not valid"
-                          disabled={recipe.readOnly}
+                          disabled={readOnly}
                         />
                       </Column>
                     </Grid>
@@ -194,7 +191,7 @@ export default function CoffeeRecipe() {
                           label="Temperature"
                           helperText="Degree [°C]"
                           invalidText="Number is not valid"
-                          disabled={recipe.readOnly}
+                          disabled={readOnly}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={2}>
@@ -208,14 +205,14 @@ export default function CoffeeRecipe() {
                             value="18"
                             id="radio-18g"
                             className="coffee-add-radio"
-                            disabled={recipe.readOnly}
+                            disabled={readOnly}
                           />
                           <RadioButton
                             labelText="12g"
                             value="12"
                             id="radio-12g"
                             className="coffee-add-radio"
-                            disabled={recipe.readOnly}
+                            disabled={readOnly}
                           />
                         </RadioButtonGroup>
                       </Column>

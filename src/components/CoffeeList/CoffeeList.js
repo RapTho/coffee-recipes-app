@@ -10,13 +10,9 @@ import { Edit } from "@carbon/icons-react";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-import { useRecipeUpdate } from "@/contexts/recipeContext";
-
 export default function CoffeeList({ data }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([[]]);
-
-  const updateRecipe = useRecipeUpdate();
 
   const router = useRouter();
 
@@ -29,7 +25,7 @@ export default function CoffeeList({ data }) {
       listItem[1].toLowerCase().includes(searchTerm.toLowerCase())
     );
     setSearchResults(results);
-  }, [searchTerm]);
+  }, [searchTerm, data]);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -43,7 +39,6 @@ export default function CoffeeList({ data }) {
     event.preventDefault();
 
     const itemId = event.target.querySelector("button > div > span").id;
-    updateRecipe(itemId, true);
     router.push(`/recipe/${itemId}`);
   };
 
