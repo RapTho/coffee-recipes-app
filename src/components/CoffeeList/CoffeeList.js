@@ -27,20 +27,21 @@ export default function CoffeeList({ data }) {
     setSearchResults(results);
   }, [searchTerm, data]);
 
-  const handleChange = (event) => {
+  function handleChange(event) {
     setSearchTerm(event.target.value);
-  };
+  }
+
+  function handleEdit(event) {}
+  function handleClick(event) {
+    event.preventDefault();
+
+    const itemId = event.target.querySelector("button > div > span").id;
+    router.push(`/view/${itemId}`);
+  }
 
   const itemAction = (
     <Button kind="ghost" iconDescription="Edit" hasIconOnly renderIcon={Edit} />
   );
-  const handleEdit = (event) => {};
-  const handleClick = (event) => {
-    event.preventDefault();
-
-    const itemId = event.target.querySelector("button > div > span").id;
-    router.push(`/recipe/${itemId}`);
-  };
 
   return (
     <Grid>

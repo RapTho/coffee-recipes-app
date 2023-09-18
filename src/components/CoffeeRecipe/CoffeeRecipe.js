@@ -12,60 +12,30 @@ import {
   Heading,
   InlineLoading,
 } from "@carbon/react";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import submitForm from "./submitForm";
 
-export default function CoffeeRecipe({ readOnly, id }) {
+export default function CoffeeRecipe({ readOnly, data = {} }) {
   const [isLoading, setIsLoading] = useState(false);
   const [savingStatus, setSavingStatus] = useState("finished");
   const [savingMessage, setSavingMessage] = useState("Saving recipe...");
 
-  const handleSubmit = async (event) => {
+  console.log(data);
+  const refs = {};
+  refs.roaster = useRef(data.roaster || null);
+  refs.bean = useRef(data.bean || null);
+  refs.input = useRef(data.input || null);
+  refs.output = useRef(data.output || null);
+  refs.mill = useRef(data.mill || null);
+  refs.time = useRef(data.time || null);
+  refs.temperature = useRef(data.temperature || null);
+  refs["18g"] = useRef(data["18g"] || true); // default to 18g
+  refs["12g"] = useRef(data["12g"] || false);
+
+  async function handleSubmit(event) {
     event.preventDefault();
-
-    setSavingMessage("Saving recipe...");
-    setSavingStatus("active");
-    setIsLoading(true);
-
-    const data = {
-      roaster: event.target[1].value,
-      bean: event.target[2].value,
-      input: event.target[3].value,
-      output: event.target[6].value,
-      mill: event.target[9].value,
-      time: event.target[12].value,
-      temperature: event.target[15].value,
-      "18g": event.target[19].checked,
-      "12g": event.target[20].checked,
-    };
-
-    const JSONdata = JSON.stringify(data);
-
-    const endpoint = "/api/v1/add";
-
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSONdata,
-    };
-
-    const response = await fetch(endpoint, options);
-
-    if (response.ok) {
-      setSavingStatus("finished");
-      setSavingMessage("Successfully saved recipe!");
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
-    } else {
-      setSavingStatus("error");
-      setSavingMessage("Failed to save recipe!");
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
-    }
-  };
+    submitForm(refs, setIsLoading, setSavingStatus, setSavingMessage);
+  }
 
   let savingAction;
   if (!isLoading && !readOnly) {
@@ -107,91 +77,102 @@ export default function CoffeeRecipe({ readOnly, id }) {
                     <Grid>
                       <Column lg={8} md={4} sm={4}>
                         <TextInput
+                          ref={refs.roaster}
                           size="lg"
                           type="roaster"
                           labelText="Roaster"
                           id="text-roaster"
                           disabled={readOnly}
+                          value={readOnly ? refs.roaster.current : undefined}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
                         <TextInput
+                          ref={refs.bean}
                           size="lg"
                           type="bean"
                           labelText="Bean"
                           id="text-bean"
                           disabled={readOnly}
+                          value={readOnly ? refs.bean.current : undefined}
                         />
                       </Column>
                     </Grid>
                     <Grid>
                       <Column lg={8} md={4} sm={4}>
                         <NumberInput
+                          ref={refs.input}
                           id="input"
                           min={0}
                           max={40}
-                          value={18}
                           step={0.1}
                           label="Input"
                           helperText="grams [g]"
                           invalidText="Number is not valid"
                           disabled={readOnly}
+                          value={readOnly ? refs.input.current : undefined}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
                         <NumberInput
+                          ref={refs.output}
                           id="output"
                           min={0}
                           max={60}
-                          value={45}
                           step={0.1}
                           label="Output"
                           helperText="grams [g]"
                           invalidText="Number is not valid"
                           disabled={readOnly}
+                          value={readOnly ? refs.output.current : undefined}
                         />
                       </Column>
                     </Grid>
                     <Grid>
                       <Column lg={8} md={4} sm={4}>
                         <NumberInput
+                          ref={refs.mill}
                           id="mill"
                           min={0}
                           max={50}
-                          value={7.4}
                           step={0.1}
                           label="Mill setting"
                           helperText="steps"
                           invalidText="Number is not valid"
                           disabled={readOnly}
+                          value={readOnly ? refs.mill.current : undefined}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
                         <NumberInput
+                          ref={refs.time}
                           id="time"
                           min={0}
                           max={50}
-                          value={25}
                           step={0.1}
                           label="Extraction time"
                           helperText="seconds [s]"
                           invalidText="Number is not valid"
                           disabled={readOnly}
+                          value={readOnly ? refs.time.current : undefined}
                         />
                       </Column>
                     </Grid>
                     <Grid>
                       <Column lg={8} md={4} sm={4}>
                         <NumberInput
+                          refs={refs.temperature}
                           id="temperature"
                           min={0}
                           max={120}
-                          value={93}
                           step={1}
                           label="Temperature"
                           helperText="Degree [°C]"
                           invalidText="Number is not valid"
                           disabled={readOnly}
+                          value={
+                            readOnly ? refs.temperature.current : undefined
+                          }
                         />
                       </Column>
                       <Column lg={8} md={4} sm={2}>
@@ -201,18 +182,26 @@ export default function CoffeeRecipe({ readOnly, id }) {
                           defaultSelected="radio-18g"
                         >
                           <RadioButton
+                            ref={refs["18g"]}
                             labelText="18g"
-                            value="18"
                             id="radio-18g"
+                            value="radio-18g"
                             className="coffee-add-radio"
                             disabled={readOnly}
+                            checked={
+                              readOnly ? refs["18g"].current.value : undefined
+                            }
                           />
                           <RadioButton
+                            refs={refs["12g"]}
                             labelText="12g"
-                            value="12"
                             id="radio-12g"
+                            value="radio-12g"
                             className="coffee-add-radio"
                             disabled={readOnly}
+                            checked={
+                              readOnly ? refs["12g"].current.value : undefined
+                            }
                           />
                         </RadioButtonGroup>
                       </Column>

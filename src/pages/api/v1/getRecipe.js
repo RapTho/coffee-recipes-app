@@ -1,4 +1,5 @@
 import clientPromise from "../../../db/connect";
+import { ObjectId } from "mongodb";
 
 export async function getDocument(id) {
   const client = await clientPromise;
@@ -6,9 +7,7 @@ export async function getDocument(id) {
   const db = client.db(process.env.MONGODB_DB);
   const col = db.collection(process.env.MONGODB_COLLECTION);
 
-  const cursor = await col.findOne({ _id: id });
-  const doc = await cursor.leadn();
-  await cursor.close();
+  const doc = await col.findOne({ _id: new ObjectId(id) });
 
   return doc;
 }
