@@ -7,12 +7,13 @@ import {
   Search,
 } from "@carbon/react";
 import { Edit } from "@carbon/icons-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 
 export default function CoffeeList({ data }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([[]]);
+  const spanRef = useRef(null);
 
   const router = useRouter();
 
@@ -27,20 +28,26 @@ export default function CoffeeList({ data }) {
     setSearchResults(results);
   }, [searchTerm, data]);
 
-  function handleChange(event) {
+  function handleSearch(event) {
     setSearchTerm(event.target.value);
   }
-
-  function handleEdit(event) {}
+  function handleEdit(event) {
+    event.preventDefault();
+    router.push(`/edit/${spanRef.current.id}`);
+  }
   function handleClick(event) {
     event.preventDefault();
-
-    const itemId = event.target.querySelector("button > div > span").id;
-    router.push(`/view/${itemId}`);
+    router.push(`/view/${spanRef.current.id}`);
   }
 
   const itemAction = (
-    <Button kind="ghost" iconDescription="Edit" hasIconOnly renderIcon={Edit} />
+    <Button
+      kind="ghost"
+      iconDescription="Edit"
+      hasIconOnly
+      renderIcon={Edit}
+      onClick={handleEdit}
+    />
   );
 
   return (
@@ -50,7 +57,7 @@ export default function CoffeeList({ data }) {
           <Search
             placeholder="Filter"
             value={searchTerm}
-            onChange={handleChange}
+            onChange={handleSearch}
             closeButtonLabelText="Clear search input"
             size="lg"
             labelText="search"
@@ -62,7 +69,9 @@ export default function CoffeeList({ data }) {
               onClick={handleClick}
               className="coffee-list-list-item"
             >
-              <span id={listItem[0]}>{listItem[1]}</span>
+              <span ref={spanRef} id={listItem[0]}>
+                {listItem[1]}
+              </span>
             </ContainedListItem>
           ))}
         </ContainedList>

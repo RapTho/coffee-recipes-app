@@ -12,26 +12,88 @@ import {
 } from "@carbon/react";
 import { useState, useRef } from "react";
 import submitForm from "./submitForm";
+import { ACTIONS } from "./actions";
 
-export default function CoffeeRecipe({ readOnly, data = {} }) {
+export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
   const [isLoading, setIsLoading] = useState(false);
   const [savingStatus, setSavingStatus] = useState("finished");
   const [savingMessage, setSavingMessage] = useState("Saving recipe...");
 
   const refs = {};
-  refs.roaster = useRef(data.roaster || null);
-  refs.bean = useRef(data.bean || null);
   refs.input = useRef(data.input || null);
   refs.output = useRef(data.output || null);
   refs.mill = useRef(data.mill || null);
+  refs.roaster = useRef(data.roaster || null);
+  refs.bean = useRef(data.bean || null);
+
+  function handleRoasterChange(event) {}
+  function handleBeanChange(event) {}
 
   async function handleSubmit(event) {
     event.preventDefault();
-    submitForm(refs, setIsLoading, setSavingStatus, setSavingMessage);
+    submitForm(
+      refs,
+      setIsLoading,
+      setSavingStatus,
+      setSavingMessage,
+      ACTIONS.CREATE,
+      id
+    );
+  }
+
+  async function handleUpdate() {
+    submitForm(
+      refs,
+      setIsLoading,
+      setSavingStatus,
+      setSavingMessage,
+      ACTIONS.UPDATE,
+      id
+    );
+  }
+
+  async function handleDelete() {
+    submitForm(
+      undefined, // refs not required
+      setIsLoading,
+      setSavingStatus,
+      setSavingMessage,
+      ACTIONS.DELETE,
+      id
+    );
+  }
+
+  function defineValue(value) {
+    if (readOnly) {
+      return value;
+    }
+    if (!readOnly && typeof id != "undefined") {
+      return value;
+    }
+    return undefined;
   }
 
   let savingAction;
-  if (!isLoading && !readOnly) {
+  if (!isLoading && !readOnly && typeof id != "undefined") {
+    savingAction = (
+      <>
+        <Column lg={4} md={2} sm={2}>
+          <Button className="coffee-save-button" onClick={handleUpdate}>
+            Update
+          </Button>
+        </Column>
+        <Column lg={4} md={2} sm={2}>
+          <Button
+            kind="danger"
+            className="coffee-save-button"
+            onClick={handleDelete}
+          >
+            Delete
+          </Button>
+        </Column>
+      </>
+    );
+  } else if (!isLoading && !readOnly) {
     savingAction = (
       <Column lg={8} md={4} sm={4}>
         <Button type="submit" className="coffee-save-button">
@@ -73,7 +135,8 @@ export default function CoffeeRecipe({ readOnly, data = {} }) {
                           labelText="Roaster"
                           id="text-roaster"
                           disabled={readOnly}
-                          value={readOnly ? refs.roaster.current : undefined}
+                          value={refs.roaster.current}
+                          onChange={handleRoasterChange}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
@@ -84,7 +147,8 @@ export default function CoffeeRecipe({ readOnly, data = {} }) {
                           labelText="Bean"
                           id="text-bean"
                           disabled={readOnly}
-                          value={readOnly ? refs.bean.current : undefined}
+                          value={refs.bean.current}
+                          onChange={handleBeanChange}
                         />
                       </Column>
                     </Grid>
@@ -100,7 +164,7 @@ export default function CoffeeRecipe({ readOnly, data = {} }) {
                           helperText="grams [g]"
                           invalidText="Number is not valid"
                           disabled={readOnly}
-                          value={readOnly ? refs.input.current : undefined}
+                          value={defineValue(refs.input.current)}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
@@ -114,7 +178,7 @@ export default function CoffeeRecipe({ readOnly, data = {} }) {
                           helperText="grams [g]"
                           invalidText="Number is not valid"
                           disabled={readOnly}
-                          value={readOnly ? refs.output.current : undefined}
+                          value={defineValue(refs.output.current)}
                         />
                       </Column>
                     </Grid>
@@ -130,7 +194,7 @@ export default function CoffeeRecipe({ readOnly, data = {} }) {
                           helperText="steps"
                           invalidText="Number is not valid"
                           disabled={readOnly}
-                          value={readOnly ? refs.mill.current : undefined}
+                          value={defineValue(refs.mill.current)}
                         />
                       </Column>
                       {savingAction}

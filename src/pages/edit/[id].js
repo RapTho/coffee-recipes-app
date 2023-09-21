@@ -9,7 +9,7 @@ export default function Recipe({ data, id }) {
         <title>Recipe</title>
       </Head>
       <Layout>
-        <CoffeeRecipe readOnly data={data} id={id} />
+        <CoffeeRecipe readOnly={false} data={data} id={id} />
       </Layout>
     </>
   );
