@@ -1,19 +1,26 @@
 @use '@carbon/react/scss/spacing' as *;
 
-.coffee-add-heading {
-    margin-top: $spacing-06;
-}
-
-.coffee-add-save {
-    height: 100%;
+@mixin coffee-save {
+    height: 70%;
     width: 100%;
+    margin-top: $spacing-04;
+    margin-bottom: $spacing-04;
     padding: $spacing-03;
     border-radius: $spacing-03;
     align-items: center;
     justify-content: center;
 }
 
-.coffee-add-radio {
-    margin-top: $spacing-03;
-    margin-bottom: $spacing-03;
+.coffee-add-heading {
+    margin-top: $spacing-06;
+}
+
+.coffee-save-button {
+   @include coffee-save;
+}
+
+.coffee-save-message {
+    @include coffee-save;
+    width: 40%;
+    justify-content:flex-start;
 }

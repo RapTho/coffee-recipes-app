@@ -19,7 +19,7 @@ export default function CoffeeList({ data }) {
   useEffect(() => {
     const listItems = data.map((item) => [
       item._id,
-      `${item.roaster} - ${item.bean}`,
+      `${item.roaster} - ${item.bean} | ${item.mill}`,
     ]);
     const results = listItems.filter((listItem) =>
       listItem[1].toLowerCase().includes(searchTerm.toLowerCase())

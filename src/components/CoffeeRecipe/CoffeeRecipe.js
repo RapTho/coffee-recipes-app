@@ -6,8 +6,6 @@ import {
   Stack,
   TextInput,
   NumberInput,
-  RadioButtonGroup,
-  RadioButton,
   Button,
   Heading,
   InlineLoading,
@@ -20,17 +18,12 @@ export default function CoffeeRecipe({ readOnly, data = {} }) {
   const [savingStatus, setSavingStatus] = useState("finished");
   const [savingMessage, setSavingMessage] = useState("Saving recipe...");
 
-  console.log(data);
   const refs = {};
   refs.roaster = useRef(data.roaster || null);
   refs.bean = useRef(data.bean || null);
   refs.input = useRef(data.input || null);
   refs.output = useRef(data.output || null);
   refs.mill = useRef(data.mill || null);
-  refs.time = useRef(data.time || null);
-  refs.temperature = useRef(data.temperature || null);
-  refs["18g"] = useRef(data["18g"] || true); // default to 18g
-  refs["12g"] = useRef(data["12g"] || false);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -40,27 +33,24 @@ export default function CoffeeRecipe({ readOnly, data = {} }) {
   let savingAction;
   if (!isLoading && !readOnly) {
     savingAction = (
-      <Grid>
-        <Column lg={16} md={8} sm={4}>
-          <Button type="submit" className="coffee-add-save">
-            Save
-          </Button>
-        </Column>
-      </Grid>
+      <Column lg={8} md={4} sm={4}>
+        <Button type="submit" className="coffee-save-button">
+          Save
+        </Button>
+      </Column>
     );
   } else if (readOnly) {
     savingAction = null;
   } else {
     savingAction = (
-      <Grid>
-        <Column lg={16} md={8} sm={4}>
-          <InlineLoading
-            status={savingStatus}
-            iconDescription="saving"
-            description={savingMessage}
-          />
-        </Column>
-      </Grid>
+      <Column lg={8} md={4} sm={4}>
+        <InlineLoading
+          status={savingStatus}
+          iconDescription="saving"
+          description={savingMessage}
+          className="coffee-save-message"
+        />
+      </Column>
     );
   }
 
@@ -143,70 +133,8 @@ export default function CoffeeRecipe({ readOnly, data = {} }) {
                           value={readOnly ? refs.mill.current : undefined}
                         />
                       </Column>
-                      <Column lg={8} md={4} sm={4}>
-                        <NumberInput
-                          ref={refs.time}
-                          id="time"
-                          min={0}
-                          max={50}
-                          step={0.1}
-                          label="Extraction time"
-                          helperText="seconds [s]"
-                          invalidText="Number is not valid"
-                          disabled={readOnly}
-                          value={readOnly ? refs.time.current : undefined}
-                        />
-                      </Column>
+                      {savingAction}
                     </Grid>
-                    <Grid>
-                      <Column lg={8} md={4} sm={4}>
-                        <NumberInput
-                          refs={refs.temperature}
-                          id="temperature"
-                          min={0}
-                          max={120}
-                          step={1}
-                          label="Temperature"
-                          helperText="Degree [°C]"
-                          invalidText="Number is not valid"
-                          disabled={readOnly}
-                          value={
-                            readOnly ? refs.temperature.current : undefined
-                          }
-                        />
-                      </Column>
-                      <Column lg={8} md={4} sm={2}>
-                        <RadioButtonGroup
-                          legendText="Strainer size"
-                          name="strainer"
-                          defaultSelected="radio-18g"
-                        >
-                          <RadioButton
-                            ref={refs["18g"]}
-                            labelText="18g"
-                            id="radio-18g"
-                            value="radio-18g"
-                            className="coffee-add-radio"
-                            disabled={readOnly}
-                            checked={
-                              readOnly ? refs["18g"].current.value : undefined
-                            }
-                          />
-                          <RadioButton
-                            refs={refs["12g"]}
-                            labelText="12g"
-                            id="radio-12g"
-                            value="radio-12g"
-                            className="coffee-add-radio"
-                            disabled={readOnly}
-                            checked={
-                              readOnly ? refs["12g"].current.value : undefined
-                            }
-                          />
-                        </RadioButtonGroup>
-                      </Column>
-                    </Grid>
-                    {savingAction}
                   </Stack>
                 </Column>
               </Grid>
