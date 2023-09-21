@@ -3,5 +3,5 @@
 .footer {
     padding-top: $spacing-05;
     padding-bottom: $spacing-05;
-    margin: auto;
+    margin: $spacing-07 auto auto auto; // top right bottom left
 }
