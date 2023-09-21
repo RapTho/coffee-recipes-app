@@ -16,7 +16,8 @@ export default async function submitForm(
   setSavingStatus,
   setSavingMessage,
   action,
-  id
+  id,
+  router
 ) {
   const savingMessage = `${action[0].toUpperCase()}${action.slice(
     1,
@@ -40,11 +41,13 @@ export default async function submitForm(
     case ACTIONS.DELETE:
       endpoint = "/api/v1/delete";
       JSONdata = JSON.stringify({ id });
+      break;
     default:
       setSavingStatus("error");
       setSavingMessage(`Failed to ${action} recipe!`);
       setTimeout(() => {
         setIsLoading(false);
+        router.push("/");
       }, 3000);
   }
 
@@ -62,12 +65,14 @@ export default async function submitForm(
     setSavingStatus("finished");
     setSavingMessage(`Successfully ${action}d recipe!`);
     setTimeout(() => {
+      router.push("/");
       setIsLoading(false);
     }, 3000);
   } else {
     setSavingStatus("error");
     setSavingMessage(`Failed to ${action} recipe!`);
     setTimeout(() => {
+      router.push("/");
       setIsLoading(false);
     }, 3000);
   }

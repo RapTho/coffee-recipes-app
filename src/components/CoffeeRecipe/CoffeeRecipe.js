@@ -11,6 +11,7 @@ import {
   InlineLoading,
 } from "@carbon/react";
 import { useState, useRef } from "react";
+import { useRouter } from "next/router";
 import submitForm from "./submitForm";
 import { ACTIONS } from "./actions";
 
@@ -18,16 +19,21 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
   const [isLoading, setIsLoading] = useState(false);
   const [savingStatus, setSavingStatus] = useState("finished");
   const [savingMessage, setSavingMessage] = useState("Saving recipe...");
+  const router = useRouter();
 
   const refs = {};
+  refs.roaster = useRef(data.roaster || null);
+  refs.bean = useRef(data.bean || null);
   refs.input = useRef(data.input || null);
   refs.output = useRef(data.output || null);
   refs.mill = useRef(data.mill || null);
-  refs.roaster = useRef(data.roaster || null);
-  refs.bean = useRef(data.bean || null);
 
-  function handleRoasterChange(event) {}
-  function handleBeanChange(event) {}
+  function handleRoasterChange(event) {
+    refs.roaster.current = event.target.value;
+  }
+  function handleBeanChange(event) {
+    refs.bean.current = event.target.value;
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -37,7 +43,8 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
       setSavingStatus,
       setSavingMessage,
       ACTIONS.CREATE,
-      id
+      id,
+      router
     );
   }
 
@@ -48,18 +55,20 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
       setSavingStatus,
       setSavingMessage,
       ACTIONS.UPDATE,
-      id
+      id,
+      router
     );
   }
 
   async function handleDelete() {
     submitForm(
-      undefined, // refs not required
+      refs,
       setIsLoading,
       setSavingStatus,
       setSavingMessage,
       ACTIONS.DELETE,
-      id
+      id,
+      router
     );
   }
 
@@ -136,7 +145,7 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
                           id="text-roaster"
                           disabled={readOnly}
                           value={refs.roaster.current}
-                          onChange={handleRoasterChange}
+                          // onChange={handleRoasterChange}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
@@ -148,7 +157,7 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
                           id="text-bean"
                           disabled={readOnly}
                           value={refs.bean.current}
-                          onChange={handleBeanChange}
+                          // onChange={handleBeanChange}
                         />
                       </Column>
                     </Grid>

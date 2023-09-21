@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
     await col.deleteOne({ _id: new ObjectId(id) });
 
-    res.sendStatus(200);
+    res.status(200).json({});
   } catch (e) {
     res.status(500).json(e.message);
   }
