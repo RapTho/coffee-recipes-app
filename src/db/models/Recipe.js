@@ -15,19 +15,19 @@ const RecipeSchema = new mongoose.Schema(
     input: {
       type: Number,
       min: 0,
-      max: 30,
+      max: 40,
       required: true,
     },
     output: {
       type: Number,
-      min: 20,
+      min: 0,
       max: 60,
       required: true,
     },
     mill: {
       type: Number,
       min: 0,
-      max: 40,
+      max: 50,
       required: true,
     },
   },

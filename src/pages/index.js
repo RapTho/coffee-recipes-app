@@ -5,7 +5,6 @@ import dbConnect from "@/db/mongoose";
 import Recipe from "@/db/models/Recipe";
 
 export default function Home({ data }) {
-  console.log(data);
   return (
     <>
       <Head>

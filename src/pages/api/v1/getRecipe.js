@@ -1,15 +1,8 @@
-import clientPromise from "../../../db/mongoose";
-import { ObjectId } from "mongodb";
+import dbConnect from "@/db/mongoose";
+import Recipe from "@/db/models/Recipe";
 
 export async function getDocument(id) {
-  const client = await clientPromise;
-
-  const db = client.db(process.env.MONGODB_DB);
-  const col = db.collection(process.env.MONGODB_COLLECTION);
-
-  const doc = await col.findOne({ _id: new ObjectId(id) });
-
-  return doc;
+  return await Recipe.findOne({ _id: id });
 }
 
 export default async function handler(req, res) {

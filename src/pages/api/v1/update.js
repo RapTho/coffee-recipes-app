@@ -1,9 +1,9 @@
-import clientPromise from "../../../db/mongoose";
-import { ObjectId } from "mongodb";
+import dbConnect from "@/db/mongoose";
+import Recipe from "@/db/models/Recipe";
 
 export default async function handler(req, res) {
-  const client = await clientPromise;
-  const filter = { _id: new ObjectId(req.body.id) };
+  await dbConnect(process.env.MONGODB_URI);
+
   const body = {
     $set: {
       ...req.body.data,
@@ -11,12 +11,7 @@ export default async function handler(req, res) {
   };
 
   try {
-    const db = client.db(process.env.MONGODB_DB);
-    const col = db.collection(process.env.MONGODB_COLLECTION);
-
-    const doc = body;
-
-    const result = await col.updateOne(filter, doc);
+    const result = await Recipe.updateOne({ _id: req.body.id }, body);
 
     res.status(200).json(result);
   } catch (e) {

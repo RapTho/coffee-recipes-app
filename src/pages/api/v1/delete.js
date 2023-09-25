@@ -1,15 +1,13 @@
-import clientPromise from "../../../db/mongoose";
-import { ObjectId } from "mongodb";
+import dbConnect from "@/db/mongoose";
+import Recipe from "@/db/models/Recipe";
 
 export default async function handler(req, res) {
-  const client = await clientPromise;
+  await dbConnect(process.env.MONGODB_URI);
+
   const id = req.body.id;
 
   try {
-    const db = client.db(process.env.MONGODB_DB);
-    const col = db.collection(process.env.MONGODB_COLLECTION);
-
-    await col.deleteOne({ _id: new ObjectId(id) });
+    await Recipe.deleteOne({ _id: id });
 
     res.status(200).json({});
   } catch (e) {
