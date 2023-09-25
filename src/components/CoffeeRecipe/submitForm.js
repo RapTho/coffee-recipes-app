@@ -2,18 +2,18 @@ import { ACTIONS } from "./actions";
 
 const DELAY = 2500;
 
-function getData(refs) {
+function getData(states) {
   return {
-    roaster: refs.roaster.current.value,
-    bean: refs.bean.current.value,
-    input: refs.input.current.value,
-    output: refs.output.current.value,
-    mill: refs.mill.current.value,
+    roaster: states.roaster,
+    bean: states.bean,
+    input: states.input,
+    output: states.output,
+    mill: states.mill,
   };
 }
 
 export default async function submitForm(
-  refs,
+  states,
   setIsLoading,
   setSavingStatus,
   setSavingMessage,
@@ -34,11 +34,11 @@ export default async function submitForm(
   switch (action) {
     case ACTIONS.CREATE:
       endpoint = "/api/v1/add";
-      JSONdata = JSON.stringify(getData(refs));
+      JSONdata = JSON.stringify(getData(states));
       break;
     case ACTIONS.UPDATE:
       endpoint = "/api/v1/update";
-      JSONdata = JSON.stringify({ id, data: getData(refs) });
+      JSONdata = JSON.stringify({ id, data: getData(states) });
       break;
     case ACTIONS.DELETE:
       endpoint = "/api/v1/delete";

@@ -10,35 +10,33 @@ import {
   Heading,
   InlineLoading,
 } from "@carbon/react";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import submitForm from "./submitForm";
 import { ACTIONS } from "./actions";
 
 export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [savingStatus, setSavingStatus] = useState("finished");
   const [savingMessage, setSavingMessage] = useState("Saving recipe...");
-  const router = useRouter();
+  const [roaster, setRoaster] = useState(data.roaster || "");
+  const [bean, setBean] = useState(data.bean || "");
+  const [input, setInput] = useState(data.input || 0);
+  const [output, setOutput] = useState(data.output || 0);
+  const [mill, setMill] = useState(data.mill || 0);
 
-  const refs = {};
-  refs.roaster = useRef(data.roaster || null);
-  refs.bean = useRef(data.bean || null);
-  refs.input = useRef(data.input || null);
-  refs.output = useRef(data.output || null);
-  refs.mill = useRef(data.mill || null);
-
-  // function handleRoasterChange(event) {
-  //   refs.roaster.current = event.target.value;
-  // }
-  // function handleBeanChange(event) {
-  //   refs.bean.current = event.target.value;
-  // }
-
+  let states = {
+    roaster,
+    bean,
+    input,
+    output,
+    mill,
+  };
   async function handleSubmit(event) {
     event.preventDefault();
     await submitForm(
-      refs,
+      states,
       setIsLoading,
       setSavingStatus,
       setSavingMessage,
@@ -50,7 +48,7 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
 
   async function handleUpdate() {
     await submitForm(
-      refs,
+      states,
       setIsLoading,
       setSavingStatus,
       setSavingMessage,
@@ -62,7 +60,7 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
 
   async function handleDelete() {
     await submitForm(
-      refs,
+      states,
       setIsLoading,
       setSavingStatus,
       setSavingMessage,
@@ -70,16 +68,6 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
       id,
       router
     );
-  }
-
-  function defineValue(value) {
-    if (readOnly) {
-      return value;
-    }
-    if (!readOnly && typeof id != "undefined") {
-      return value;
-    }
-    return undefined;
   }
 
   let savingAction;
@@ -138,33 +126,30 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
                     <Grid>
                       <Column lg={8} md={4} sm={4}>
                         <TextInput
-                          ref={refs.roaster}
                           size="lg"
                           type="roaster"
                           labelText="Roaster"
                           id="text-roaster"
                           disabled={readOnly}
-                          value={refs.roaster.current}
-                          // onChange={handleRoasterChange}
+                          value={roaster}
+                          onChange={(e) => setRoaster(e.target.value)}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
                         <TextInput
-                          ref={refs.bean}
                           size="lg"
                           type="bean"
                           labelText="Bean"
                           id="text-bean"
                           disabled={readOnly}
-                          value={refs.bean.current}
-                          // onChange={handleBeanChange}
+                          value={bean}
+                          onChange={(e) => setBean(e.target.value)}
                         />
                       </Column>
                     </Grid>
                     <Grid>
                       <Column lg={8} md={4} sm={4}>
                         <NumberInput
-                          ref={refs.input}
                           id="input"
                           min={0}
                           max={40}
@@ -173,12 +158,12 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
                           helperText="grams [g]"
                           invalidText="Number is not valid"
                           disabled={readOnly}
-                          value={defineValue(refs.input.current)}
+                          value={input}
+                          onChange={(e) => setInput(e.target.value)}
                         />
                       </Column>
                       <Column lg={8} md={4} sm={4}>
                         <NumberInput
-                          ref={refs.output}
                           id="output"
                           min={0}
                           max={60}
@@ -187,14 +172,14 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
                           helperText="grams [g]"
                           invalidText="Number is not valid"
                           disabled={readOnly}
-                          value={defineValue(refs.output.current)}
+                          value={output}
+                          onChange={(e) => setOutput(e.target.value)}
                         />
                       </Column>
                     </Grid>
                     <Grid>
                       <Column lg={8} md={4} sm={4}>
                         <NumberInput
-                          ref={refs.mill}
                           id="mill"
                           min={0}
                           max={50}
@@ -203,7 +188,8 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
                           helperText="steps"
                           invalidText="Number is not valid"
                           disabled={readOnly}
-                          value={defineValue(refs.mill.current)}
+                          value={mill}
+                          onChange={(e) => setMill(e.target.value)}
                         />
                       </Column>
                       {savingAction}
