@@ -1,9 +1,11 @@
 import Layout from "@/components/Layout";
 import CoffeeList from "@/components/CoffeeList/CoffeeList";
-
 import Head from "next/head";
+import dbConnect from "@/db/mongoose";
+import Recipe from "@/db/models/Recipe";
 
 export default function Home({ data }) {
+  console.log(data);
   return (
     <>
       <Head>
@@ -16,17 +18,14 @@ export default function Home({ data }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const res = await fetch(`${process.env.BASE_URL}/api/v1/getData`);
-  const data = await res.json();
+export async function getServerSideProps() {
+  await dbConnect(process.env.MONGODB_URI);
 
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
+  const result = await Recipe.find({}); // get all recipes
 
-  return {
-    props: { data },
-  };
+  const recipes = result.map((doc) => {
+    return JSON.parse(JSON.stringify(doc));
+  });
+
+  return { props: { data: recipes } };
 }

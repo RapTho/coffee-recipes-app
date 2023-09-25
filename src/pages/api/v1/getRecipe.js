@@ -1,4 +1,4 @@
-import clientPromise from "../../../db/connect";
+import clientPromise from "../../../db/mongoose";
 import { ObjectId } from "mongodb";
 
 export async function getDocument(id) {
