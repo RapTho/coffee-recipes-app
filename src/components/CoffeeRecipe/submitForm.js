@@ -1,5 +1,7 @@
 import { ACTIONS } from "./actions";
 
+const DELAY = 2500;
+
 function getData(refs) {
   return {
     roaster: refs.roaster.current.value,
@@ -48,7 +50,7 @@ export default async function submitForm(
       setTimeout(() => {
         setIsLoading(false);
         router.push("/");
-      }, 3000);
+      }, DELAY);
   }
 
   const options = {
@@ -67,13 +69,13 @@ export default async function submitForm(
     setTimeout(() => {
       router.push("/");
       setIsLoading(false);
-    }, 3000);
+    }, DELAY);
   } else {
     setSavingStatus("error");
     setSavingMessage(`Failed to ${action} recipe!`);
     setTimeout(() => {
       router.push("/");
       setIsLoading(false);
-    }, 3000);
+    }, DELAY);
   }
 }

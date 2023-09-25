@@ -28,16 +28,16 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
   refs.output = useRef(data.output || null);
   refs.mill = useRef(data.mill || null);
 
-  function handleRoasterChange(event) {
-    refs.roaster.current = event.target.value;
-  }
-  function handleBeanChange(event) {
-    refs.bean.current = event.target.value;
-  }
+  // function handleRoasterChange(event) {
+  //   refs.roaster.current = event.target.value;
+  // }
+  // function handleBeanChange(event) {
+  //   refs.bean.current = event.target.value;
+  // }
 
   async function handleSubmit(event) {
     event.preventDefault();
-    submitForm(
+    await submitForm(
       refs,
       setIsLoading,
       setSavingStatus,
@@ -49,7 +49,7 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
   }
 
   async function handleUpdate() {
-    submitForm(
+    await submitForm(
       refs,
       setIsLoading,
       setSavingStatus,
@@ -61,7 +61,7 @@ export default function CoffeeRecipe({ readOnly, data = {}, id = undefined }) {
   }
 
   async function handleDelete() {
-    submitForm(
+    await submitForm(
       refs,
       setIsLoading,
       setSavingStatus,
